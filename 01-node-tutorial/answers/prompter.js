@@ -21,17 +21,26 @@ const getBody = (req, callback) => {
 };
 
 // here, you could declare one or more variables to store what comes back from the form.
-let item = "Enter something below.";
+let targetNumber = Math.floor(Math.random() * 100) + 1;
+let feedback = "Guess a number between 1 and 100.";
+let userGuess = "";
+let attemptCount = 0;
+let isGameOver = false; // Flag to track if the game is over
 
 // here, you can change the form below to modify the input fields and what is displayed.
 // This is just ordinary html with string interpolation.
 const form = () => {
   return `
   <body>
-  <p>${item}</p>
+  <h1>Guessing Game</h1>
+   <p>Attempt count: ${attemptCount}</p>
+   <p>${feedback}</p>
   <form method="POST">
-  <input name="item"></input>
-  <button type="submit">Submit</button>
+    <label>Enter your guess: </label>
+  <input name="guess" type="number" value="${userGuess}" ${
+    isGameOver ? "disabled" : ""
+  }></input>
+  <button type="submit"  ${isGameOver ? "disabled" : ""}>Submit</button>
   </form>
   </body>
   `;
@@ -44,10 +53,19 @@ const server = http.createServer((req, res) => {
     getBody(req, (body) => {
       console.log("The body of the post is ", body);
       // here, you can add your own logic
-      if (body["item"]) {
-        item = body["item"];
+      if (body["guess"]) {
+        userGuess = parseInt(body["guess"], 10);
+        attemptCount++; // Increment the attempt counter
+        if (userGuess < targetNumber) {
+          feedback = "Too low. Guess again.";
+        } else if (userGuess > targetNumber) {
+          feedback = "Too high. Guess again.";
+        } else {
+          feedback = `Correct!You got it! The number was " ${targetNumber}.`;
+          isGameOver = true; // Set the flag to true when the user guesses correctly
+        }
       } else {
-        item = "Nothing was entered.";
+        feedback = "Please enter a valid number.";
       }
       // Your code changes would end here
       res.writeHead(303, {
