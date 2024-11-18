@@ -28,7 +28,7 @@ let attemptCount = 0;
 let isGameOver = false; // Flag to track if the game is over
 
 // here, you can change the form below to modify the input fields and what is displayed.
-// This is just ordinary html with string interpolation.
+// this is just ordinary html with string interpolation.
 const form = () => {
   return `
   <body>
@@ -76,6 +76,10 @@ const server = http.createServer((req, res) => {
   } else {
     res.end(form());
   }
+});
+
+server.on("request", (req) => {
+  console.log("event received: ", req.method, req.url);
 });
 
 server.listen(3000);
