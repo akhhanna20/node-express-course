@@ -49,8 +49,13 @@ app.get("/api/v1/query", (req, res) => {
       (p) => p.price <= parseInt(price)
     );
   }
+
+  if (filteredProducts.length < 1) {
+    return res.status(200).json({ sucess: true, data: [] });
+  }
+
   // Respond with the filtered and limited list of products
-  res.json(filteredProducts);
+  res.status(200).json(filteredProducts);
 });
 
 app.get("*", (req, res) => {
