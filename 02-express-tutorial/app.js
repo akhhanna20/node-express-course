@@ -23,8 +23,8 @@ app.use(express.json());
 app.use("/api/v1/people", peopleRouter);
 app.use(cookieParser());
 //This middleware serves static files from the ./public directory
-//app.use(express.static("./public"));
-app.use(express.static("./methods-public"));
+app.use(express.static("./public"));
+//app.use(express.static("./methods-public"));
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
 });
