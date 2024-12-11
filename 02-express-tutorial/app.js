@@ -1,6 +1,6 @@
 //Import require module
 const express = require("express");
-const { products } = require("./data");
+const { products, people } = require("./data");
 const cookieParser = require("cookie-parser");
 
 const peopleRouter = require("./routes/people");
@@ -23,9 +23,8 @@ app.use(express.json());
 app.use("/api/v1/people", peopleRouter);
 app.use(cookieParser());
 //This middleware serves static files from the ./public directory
-app.use(express.static("./public"));
-// app.use(express.static("./methods-public"));
-
+//app.use(express.static("./public"));
+app.use(express.static("./methods-public"));
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
 });
