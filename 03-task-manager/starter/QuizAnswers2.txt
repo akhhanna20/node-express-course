@@ -1,0 +1,13 @@
+In Express, when using async(await), any unhandled errors in asynchronous code result in a rejected promise. 
+Without proper handling, these errors can crash the server or remain uncaught.
+Wrapping the route handler in asyncWrapper ensures that any errors are caught and passed to the next middleware.
+asyncWrapper wrap our controllers. This keeps route handlers clean. We don't need to use try-catch block.
+
+const getTask = asyncWrapper(async (req, res, next) => {  
+  const { id: taskID } = req.params;  
+  const task = await Task.findOne({ _id: taskID });  
+  if (!task) {  
+    return next(new CustomApiError(`No task with id : ${taskID}`, 404`));
+  }  
+  res.status(200).json({ task });  
+});  
